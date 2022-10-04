@@ -4,8 +4,7 @@ $temp = "C:\Users\vagrant\AppData\Local\Temp"
 $log = "C:\Users\vagrant\AppData\Local\Temp\log"
 
 if(-not(Test-Path($log))){
-    cd $temp
-    mkdir log
+    mkdir "$temp\log"
 }
 
 $reg = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
@@ -86,7 +85,6 @@ if(-not(Test-Path $neo4bat)){
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Downloaded Neo4j zip"
     cd $neo4bat 
     ./neo4j.bat install-service # Installing neo4j from his .bat installer
-    Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Neo4j correctly installed" 
 
     if(-not(Test-Path $neo4bat)){
         Throw "Unable to install Neo4j, aborting..."
