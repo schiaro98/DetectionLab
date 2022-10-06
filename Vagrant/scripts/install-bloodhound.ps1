@@ -1,7 +1,7 @@
 # Purpose: Install packages required from Bloodhound (Java and Neo4j).
 # Creare cartella log e collector
-$temp = "C:\Users\vagrant\AppData\Local\Temp"
-$log = "C:\Users\vagrant\AppData\Local\Temp\log"
+$temp = "C:\Tools\"
+$log = "C:\Tools\log"
 
 if(-not(Test-Path($log))){
     mkdir "$temp\log"
@@ -84,7 +84,7 @@ if(-not(Test-Path $neo4bat)){
 
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Downloaded Neo4j zip"
     cd $neo4bat 
-    ./neo4j.bat install-service # Installing neo4j from his .bat installer
+    .\neo4j.bat install-service # Installing neo4j from his .bat installer
 
     if(-not(Test-Path $neo4bat)){
         Throw "Unable to install Neo4j, aborting..."
@@ -159,6 +159,10 @@ if (Test-Path "$temp\jdk.msi") {Remove-Item -Path "$temp\jdk.msi"}
 if (Test-Path "$temp\bloodhound.zip") {Remove-Item -Path "$temp\bloodhound.zip"}
 if (Test-Path "$temp\neo4j.zip") {Remove-Item -Path "$temp\neo4j.zip"}
 if (Test-Path "$collectorResult") {Remove-Item -Path "$collectorResult\*.zip"}
+
+
+# Add BloodHound to dekstop
+
 
 # All work is done !
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) BloodHound installing finished"
