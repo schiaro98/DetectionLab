@@ -160,9 +160,5 @@ if (Test-Path "$temp\bloodhound.zip") {Remove-Item -Path "$temp\bloodhound.zip"}
 if (Test-Path "$temp\neo4j.zip") {Remove-Item -Path "$temp\neo4j.zip"}
 if (Test-Path "$collectorResult") {Remove-Item -Path "$collectorResult\*.zip"}
 
-
-# Add BloodHound to dekstop
-
-
 # All work is done !
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) BloodHound installing finished"
