@@ -158,7 +158,7 @@ if (Test-Path "$temp\7zip.msi") { Remove-Item -Path "$temp\7zip.msi"}
 if (Test-Path "$temp\jdk.msi") {Remove-Item -Path "$temp\jdk.msi"}
 if (Test-Path "$temp\bloodhound.zip") {Remove-Item -Path "$temp\bloodhound.zip"}
 if (Test-Path "$temp\neo4j.zip") {Remove-Item -Path "$temp\neo4j.zip"}
-if (Test-Path "$collectorResult") {Remove-Item -Path "$temp\*.zip"}
+if (Test-Path "$collectorResult") {Remove-Item -Path "$collectorResult\*.zip"}
 
 # All work is done !
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) BloodHound installing finished"
