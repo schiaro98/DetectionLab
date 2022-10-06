@@ -125,25 +125,19 @@ if(-not(Test-Path $blFolderPath)){
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Bloodhound already installed" 
 }  
 
-# Download collector, if not already downloaded and scan the domain it
-$collectorPath = "$temp\sharphound.exe"
+# Use Bloodhound default collector
+
+$preInstalledCollector = "$blFolderPath\resources\app\Collectors\"
 $collectorResult = "$temp\collector"
 
 if(-not(Test-Path $collectorResult)){
-    Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Sharphound Collector is not installed yet, going to install it now"
-    
-    if(Test-Path $collectorPath){
-        Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Collector already downloaded, executing it"
-    } else {
-        $collector = "https://github.com/BloodHoundAD/BloodHound/raw/master/Collectors/SharpHound.exe"
-        Invoke-WebRequest -Uri $collector -OutFile $collectorPath
 
-    }
-    
-    cd $temp
-    mkdir collector
+    mkdir $collectorResult
+
+    cd $preInstalledCollector
 
     .\sharphound.exe -c DCOnly --LdapUsername 'vagrant' --LdapPassword 'vagrant' --Domain windomain.local --OutputDirectory $collectorResult
+    
     7zip x -y "$collectorResult\*.zip" -o"$collectorResult"
 
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Results of the domain scan are available at: "
@@ -162,3 +156,4 @@ if (Test-Path "$collectorResult") {Remove-Item -Path "$collectorResult\*.zip"}
 
 # All work is done !
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) BloodHound installing finished"
+

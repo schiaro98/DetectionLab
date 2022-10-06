@@ -1,18 +1,30 @@
 # Purpose: Install packages required for Hashcat (Hashcat and Opencl).
 
-# TODO controllo che non sia già installato
+
+
 
 $tools = "C:\Tools"
-$log = "C:\tmp"
+$log = "C:\Tools\log"
 $reg = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
 Set-Alias 7zip 'C:\Program Files\7-Zip\7z.exe'
 
+
 if(-not(Test-Path($log))){
-    mkdir "$tools\log"
+    mkdir $log
 }
 
-$openclName = "Intel® CPU Runtime for OpenCL™ Applications 18.1"
-$isOpenClInstalled = (Get-Itoolsroperty $reg | Where { $_.DisplayName -eq $openclName }) -ne $null
+
+# Scarico una wordlist dalla repo
+$wordlistPath = "$tools\wordlist.txt"
+if(-not(Test-Path($wordlistPath))){
+    $wordlist = "https://github.com/schiaro98/DetectionLab/blob/master/wordlist.txt"
+    Invoke-WebRequest -Uri $wordlist -OutFile $wordlistPath
+} else {
+    Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Wordlist already existing, continuing..."
+}
+
+$openclName = "Intel"
+$isOpenClInstalled = (Get-ItemProperty $reg | Where { $_.DisplayName -like $openclName }) -ne $null
 
 if(-not($isOpenClInstalled)){
     $opencl = "https://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/13794/opencl_runtime_18.1_x64_setup.msi"
@@ -51,7 +63,7 @@ if(-not(Test-Path($rubeusFile))){
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Downloading rubeus..."
     Invoke-WebRequest -Uri $rubeus -OutFile $rubeusFile
     Set-Alias rubeus $rubeusFile
-}
+}   
 
 # DOwnload SecList repo with thousand of password lists, it's more than 2 Gb, so disabled by default
 # $passwordList = "https://github.com/danielmiessler/SecLists/tree/master/Passwords"
@@ -62,5 +74,11 @@ if(-not(Test-Path($rubeusFile))){
 #} else {
 #        Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Passwords already downloaded, continuing..."
 #}
+
+# Remove unused file
+
+Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Cleaning useless files, archive and installer"
+if (Test-Path "$temp\hashcat.7z") {Remove-Item -Path "$temp\hashcat.7z"}
+if (Test-Path "$temp\opencl.msi") {Remove-Item -Path "$temp\opencl.msi"}
 
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Hashcat install finished..."

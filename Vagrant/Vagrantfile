@@ -212,9 +212,9 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", inline: "Write-Host 'Win10 Provisioning Complete!'", privileged: false
 
         
-    #config.vm.provision "opencl", type: "shell" do |s| # This type of provisioning can be launched when the system is already started and running
-     # s.path = "scripts/install-hashcat.ps1"
-    #end
+    config.vm.provision "opencl", type: "shell" do |s| # This type of provisioning can be launched when the system is already started and running
+      s.path = "scripts/install-hashcat.ps1"
+    end
 
     cfg.vm.provider "vmware_desktop" do |v, override|
       v.vmx["displayname"] = "win10.windomain.local"
