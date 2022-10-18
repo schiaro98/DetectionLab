@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
       #libvirt.storage_pool_path = '/media/storage_nvme/system_session_vm_pool'
       lv.storage_pool_name = 'default'
       override.vm.box = "generic/ubuntu2004"
-      override.vm.synced_folder './', '/vagrant', type: 'rsync' 
+      override.vm.synced_folder './', '/vagrant', type: 'rsync'
     end
   end
 
@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
     cfg.winrm.retry_limit = 20
     cfg.vm.network :private_network, ip: "192.168.56.102", gateway: "192.168.56.1", dns: "8.8.8.8"
 
-    cfg.vm.provision "shell", path: "scripts/fix-second-network.ps1", privileged: true, args: "-ip 192.168.56.102 -dns 8.8.8.8 -gateway 192.168.56.1" 
+    cfg.vm.provision "shell", path: "scripts/fix-second-network.ps1", privileged: true, args: "-ip 192.168.56.102 -dns 8.8.8.8 -gateway 192.168.56.1"
     cfg.vm.provision "shell", path: "scripts/provision.ps1", privileged: false
     cfg.vm.provision "reload"
     cfg.vm.provision "shell", path: "scripts/provision.ps1", privileged: false
@@ -79,10 +79,10 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", path: "scripts/install-autorunstowineventlog.ps1", privileged: false
     cfg.vm.provision "shell", inline: 'wevtutil el | Select-String -notmatch "Microsoft-Windows-LiveId" | Foreach-Object {wevtutil cl "$_"}', privileged: false
     cfg.vm.provision "shell", inline: "Set-SmbServerConfiguration -AuditSmb1Access $true -Force", privileged: false
-    cfg.vm.provision "shell", inline: "Write-Host 'DC Provisioning Complete!'", privileged: false
     cfg.vm.provision "shell", inline: "Set-WinUserLanguageList -LanguageList it-IT -force", privileged: false
-    cfg.vm.provision "shell", inline: "Install-WindowsFeature Windows-Server-Backup", privileged: false
-    
+    cfg.vm.provision "shell", inline: "choco install -y winpcap --force", privileged: false #Otherwise wireshark doesn't read wincap dll
+    cfg.vm.provision "shell", inline: "Write-Host 'DC Provisioning Complete!'", privileged: false
+
     cfg.vm.provider "vmware_desktop" do |v, override|
       v.vmx["displayname"] = "dc.windomain.local"
       v.memory = 3072
@@ -113,7 +113,7 @@ Vagrant.configure("2") do |config|
       lv.cpus = 2
       # This is NOT the right semantic for Vagrant synced folder. It's a workaround:
       # https://github.com/Cimpress-MCP/vagrant-winrm-syncedfolders/issues/11
-      override.vm.synced_folder '.', '/', type: 'winrm' 
+      override.vm.synced_folder '.', '/', type: 'winrm'
     end
   end
 
@@ -127,7 +127,7 @@ Vagrant.configure("2") do |config|
     cfg.winrm.retry_limit = 20
     cfg.vm.network :private_network, ip: "192.168.56.103", gateway: "192.168.56.1", dns: "192.168.56.102"
 
-    cfg.vm.provision "shell", path: "scripts/fix-second-network.ps1", privileged: true, args: "-ip 192.168.56.103 -dns 8.8.8.8 -gateway 192.168.56.1" 
+    cfg.vm.provision "shell", path: "scripts/fix-second-network.ps1", privileged: true, args: "-ip 192.168.56.103 -dns 8.8.8.8 -gateway 192.168.56.1"
     cfg.vm.provision "shell", path: "scripts/provision.ps1", privileged: false
     cfg.vm.provision "reload"
     cfg.vm.provision "shell", path: "scripts/provision.ps1", privileged: false
@@ -176,7 +176,7 @@ Vagrant.configure("2") do |config|
       lv.video_vram = 32768
       lv.memory = 2048
       lv.cpus = 2
-      override.vm.synced_folder '.', '/', type: 'winrm' 
+      override.vm.synced_folder '.', '/', type: 'winrm'
     end
   end
 
@@ -190,7 +190,7 @@ Vagrant.configure("2") do |config|
     cfg.winrm.retry_limit = 20
     cfg.vm.network :private_network, ip: "192.168.56.104", gateway: "192.168.56.1", dns: "192.168.56.102"
 
-    cfg.vm.provision "shell", path: "scripts/fix-second-network.ps1", privileged: false, args: "-ip 192.168.56.104 -dns 8.8.8.8 -gateway 192.168.56.1" 
+    cfg.vm.provision "shell", path: "scripts/fix-second-network.ps1", privileged: false, args: "-ip 192.168.56.104 -dns 8.8.8.8 -gateway 192.168.56.1"
     cfg.vm.provision "shell", path: "scripts/MakeWindows10GreatAgain.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/provision.ps1", privileged: false
     cfg.vm.provision "reload"
@@ -204,16 +204,16 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", path: "scripts/install-sysinternals.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-velociraptor.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-autorunstowineventlog.ps1", privileged: false
-    cfg.vm.provision "shell", inline: "choco install git -y", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-bloodhound.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-hashcat.ps1", privileged: false
+    cfg.vm.provision "shell", path: "scripts/create-users.ps1", privileged: false
     cfg.vm.provision "shell", inline: "Set-WinUserLanguageList -LanguageList it-IT -force", privileged: false
-    cfg.vm.provision "shell", inline: "Import-Module C:\Tools\PowerSploit\PowerSploit-dev\PowerSploit.psm1", privileged: false
+    cfg.vm.provision "shell", inline: "choco install -y winpcap --force", privileged: false #Otherwise wireshark doesn't read wincap dll
     cfg.vm.provision "shell", inline: "Write-Host 'Win10 Provisioning Complete!'", privileged: false
 
-        
-    config.vm.provision "opencl", type: "shell" do |s| # This type of provisioning can be launched when the system is already started and running
-      s.path = "scripts/install-hashcat.ps1"
+
+    config.vm.provision "tools", type: "shell" do |s| # This type of provisioning can be launched when the system is already started and running
+      s.path = "scripts/install-psexec.ps1"
     end
 
     cfg.vm.provider "vmware_desktop" do |v, override|
@@ -245,7 +245,7 @@ Vagrant.configure("2") do |config|
       lv.video_vram = 32768
       lv.memory = 3072
       lv.cpus = 2
-      override.vm.synced_folder '.', '/', type: 'winrm' 
+      override.vm.synced_folder '.', '/', type: 'winrm'
     end
   end
 

@@ -1,23 +1,21 @@
-# Purpose: Install packages required for Hashcat (Hashcat and Opencl).
-
-
-
+# Purpose: Install packages required for Hashcat, Rubeus and OpenCl.
 
 $tools = "C:\Tools"
 $log = "C:\Tools\log"
 $reg = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
-Set-Alias 7zip 'C:\Program Files\7-Zip\7z.exe'
 
+Set-Alias 7zip 'C:\Program Files\7-Zip\7z.exe'
 
 if(-not(Test-Path($log))){
     mkdir $log
 }
 
-
 # Scarico una wordlist dalla repo
 $wordlistPath = "$tools\wordlist.txt"
+
 if(-not(Test-Path($wordlistPath))){
-    $wordlist = "https://github.com/schiaro98/DetectionLab/blob/master/wordlist.txt"
+    Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Downloading Wordlist..."
+    $wordlist = "https://raw.githubusercontent.com/schiaro98/DetectionLab/master/wordlist.txt"
     Invoke-WebRequest -Uri $wordlist -OutFile $wordlistPath
 } else {
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Wordlist already existing, continuing..."
@@ -78,7 +76,7 @@ if(-not(Test-Path($rubeusFile))){
 # Remove unused file
 
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Cleaning useless files, archive and installer"
-if (Test-Path "$temp\hashcat.7z") {Remove-Item -Path "$temp\hashcat.7z"}
-if (Test-Path "$temp\opencl.msi") {Remove-Item -Path "$temp\opencl.msi"}
+if (Test-Path "$tools\hashcat.7z") {Remove-Item -Path "$tools\hashcat.7z"}
+if (Test-Path "$tools\opencl.msi") {Remove-Item -Path "$tools\opencl.msi"}
 
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Hashcat install finished..."

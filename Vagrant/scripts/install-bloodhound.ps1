@@ -9,6 +9,8 @@ if(-not(Test-Path($log))){
 
 $reg = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
 
+choco install git -y
+
 $java = "Microsoft Build of OpenJDK with Hotspot 11.0.16.1+1 (x64)"
 $isJavaInstalled = (Get-ItemProperty $reg | Where { $_.DisplayName -eq $java }) -ne $null
 
@@ -66,6 +68,10 @@ else {
         Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Java JDK correctly installed"
     }
 }
+
+shutdown -r #TODO Java non viene visto e quindi 
+# non viene installato correttamente neo4j
+
 
 # Install neo4j if not already installed
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Checking if Neo4j is already installed"
