@@ -1,0 +1,5 @@
+vagrant
+krbtgt
+Guest
+Administrator
+DefaultAccount
