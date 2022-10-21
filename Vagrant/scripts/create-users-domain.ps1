@@ -16,7 +16,7 @@ $password = ConvertTo-SecureString $pass -AsPlainText -Force
 foreach ($user in $users) {
     if((Get-ADUser -Filter *).SamAccountName -Contains $user -eq $false){
         Write-Host "$user does not exist, gonna create it..."
-        New-ADUser -Name $user -AccountPassword $password
+        New-ADUser -Name $user -AccountPassword $password -enabled $true
     } else {
         Write-Host "$user already exist..."    
     }
