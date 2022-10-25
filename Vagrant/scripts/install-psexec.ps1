@@ -19,3 +19,5 @@ if(-not(Test-Path($psDir))){
 } else {
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) PSTools already installed..."
 }
+
+if (Test-Path $PSTools) {Remove-Item -Path $PSTools}
