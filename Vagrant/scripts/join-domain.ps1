@@ -6,8 +6,8 @@ $hostsFile = "c:\Windows\System32\drivers\etc\hosts"
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Joining the domain..."
 
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) First, set DNS to DC to join the domain..."
-$newDNSServers = "192.168.56.102"
-$adapters = Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.IPAddress -match "192.168.56."}
+$newDNSServers = "10.0.100.6"
+$adapters = Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.IPAddress -match "10.0.100."}
 # Don't do this in Azure. If the network adatper description contains "Hyper-V", this won't apply changes.
 # Specify the DC as a WINS server to help with connectivity as well
 $adapters | ForEach-Object {if (!($_.Description).Contains("Hyper-V")) {$_.SetDNSServerSearchOrder($newDNSServers); $_.SetWINSServer($newDNSServers, "")}}

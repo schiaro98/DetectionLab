@@ -57,7 +57,7 @@ if ($env:COMPUTERNAME -imatch 'vagrant') {
 
   Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) My hostname is $env:COMPUTERNAME"
   if ($env:COMPUTERNAME -imatch 'dc') {
-    . c:\vagrant\scripts\create-domain.ps1 192.168.56.102
+    . c:\vagrant\scripts\create-domain.ps1 10.0.100.6
   } else {
     . c:\vagrant\scripts\join-domain.ps1
   }

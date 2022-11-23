@@ -19,7 +19,7 @@
   register: dir
 
 - name: Git clone Detectionlab
-  win_shell: git clone https://github.com/clong/DetectionLab.git
+  win_shell: git clone https://github.com/schiaro98/DetectionLab.git
   args:
     chdir: 'c:\'
   when: not dir.stat.exists
@@ -40,7 +40,19 @@
     password_never_expires: yes
   # Fail after domain creation: Failed to remove Domain Users: Exception calling \"Remove\" with \"1\" argument(s): \"This operation is not allowed on this special group.
   ignore_errors: true
-  
+
+- name: Create vagrant user
+  win_user:
+    name: vagrant
+    password: vagrant
+    state: present
+    groups:
+      - Users
+      - Administrators
+    password_never_expires: yes
+  # Fail after domain creation: Failed to remove Domain Users: Exception calling \"Remove\" with \"1\" argument(s): \"This operation is not allowed on this special group.
+  ignore_errors: true
+
 - name: Create the Domain
   win_shell: .\\provision.ps1
   args:
@@ -176,5 +188,3 @@
   with_items:
     - "wevtutil el | Select-String -notmatch \"Microsoft-Windows-LiveId\" | Foreach-Object {wevtutil cl \"$_\"}"
     - "Set-SmbServerConfiguration -AuditSmb1Access $true -Force"
-
-

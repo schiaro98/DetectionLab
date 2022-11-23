@@ -3,7 +3,7 @@
   win_dns_client:
     adapter_names: '*'
     ipv4_addresses:
-      - 192.168.56.102
+      - 10.0.100.6
       - 8.8.8.8
     log_path: C:\dns_log.txt
 
