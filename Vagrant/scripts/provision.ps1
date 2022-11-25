@@ -20,17 +20,10 @@ If (!(Test-Path $ProfilePath)) {
   }
 }
 
-# Ping DetectionLab server for usage statistics
-Try {
-  curl -userAgent "DetectionLab-$box" "https://ping.detectionlab.network/$box" -UseBasicParsing | out-null
-} Catch {
-  Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Unable to connect to ping.detectionlab.network"
-  Write-Host $_.Exception.Message
-}
-
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Disabling IPv6 on all network adatpers..."
 Get-NetAdapterBinding -ComponentID ms_tcpip6 | ForEach-Object {Disable-NetAdapterBinding -Name $_.Name -ComponentID ms_tcpip6}
 Get-NetAdapterBinding -ComponentID ms_tcpip6 
+
 # https://support.microsoft.com/en-gb/help/929852/guidance-for-configuring-ipv6-in-windows-for-advanced-users
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents /t REG_DWORD /d 255 /f
 
