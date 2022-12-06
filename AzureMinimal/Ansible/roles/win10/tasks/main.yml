@@ -18,7 +18,7 @@
   register: dir
 
 - name: Git clone Detectionlab
-  win_shell: git clone https://github.com/clong/DetectionLab.git
+  win_shell: git clone https://github.com/schiaro98/DetectionLab.git
   args:
     chdir: 'c:\'
   when: not dir.stat.exists
