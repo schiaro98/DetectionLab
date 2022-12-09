@@ -7,3 +7,5 @@ foreach ($user in $usersDomain) {
 net localgroup "Remote Desktop Users" "local1" /add
 net localgroup "Remote Desktop Users" "local2" /add
 net localgroup "Remote Desktop Users" "vagrant" /add
+
+Write-Host "Users joined rdp group..."
