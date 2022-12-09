@@ -4,9 +4,6 @@
 # Clone the Guacamole-docker-compose project
 git clone "https://github.com/boschkundendienst/guacamole-docker-compose"
 
-# Clone the lab repo
-git clone "https://github.com/schiaro98/DetectionLab"
-
 # Install docker and docker compose
 sudo apt install docker docker-compose
 

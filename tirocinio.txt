@@ -1,0 +1,48 @@
+Preparazione macchina guacamole/ansible:
+- Clonare repo lab "git clone "https://github.com/schiaro98/DetectionLab"
+- Lanciare script "setup-guacamole.sh" che installerà ansible, pip, docker, guacamole
+- Una volta controllato che guacamole funzioni correttamente ("https://<ip pubblico>:8443/#/") si può passare 
+alla configurazione delle macchine con ansible
+
+Preparazione macchina DC e WIN10:
+
+- Eseguire script `DetectionLab/A   zureMinimal/Ansible/enableRemoting.ps1` per permettere connessione winrm (ansible).
+- Controllare che gli hostname siano "dc" per il domain controller e "win10" per la workstation. (Possibile usare Rename-Computer da 
+powershell per cambiare facilmente il nome)
+- Disabilitare WIndows firewall/defender sulle macchine windows
+- Controllare che il gruppo "Remote Desktop Users" sia popolato sia in DC che in win10 altrimenti non è possibile connettersi in rdp (guacamole)
+- Se appare un messaggio che non permette la connessione in RDP modificare le GPO come descritto in fondo
+- Controllare i seguenti servizi (services.msc):
+    - Windows update
+    - Abilitare Bits di default
+    - Windows Module Installer e Windows Installer
+
+FAQ errori:
+
+Errori nei task ansible:
+
+-Create an Administrator user or vagrant user:
+
+Se l'errore riguarda un failed to remove user non c'è problema, 
+ciò avviene quando gli utenti sono già creati e ansible non riesce ad eliminarli
+
+- L'esecuzione di script è bloccata da antivirus:
+
+Lanciare da powershell come admin: Set-MpPreference -DisableRealtimeMonitoring $true 
+
+Se l'errore riguarda il join al dominio, in particolare che l'utente/computer fa parte di un dominio AAD:
+
+Se nel join del dominio da errore che il pc è connesso ad un dominio AAD occorre, andare nelle impostazioni,
+su Account, access from work or school. Cliccare nella casella che compare e rimuvere l'utente, inserire le credenziali classiche create.
+
+Errore nel join al dominio, dominio non trovato o impossibile da contattare:
+- Aggiungere dc come wins nella workstation
+- Aggiungere 10.0.100.4 windomain.local in C:\Windows\System32\...\hosts
+
+Se l'errore è l'out of memory c'è poco da fare se non chiudere eventuali sessioni guacamole e riprocedere all'installazione
+
+Modifica GPO per rdp:
+
+
+gpedit.msc > Computer Configuration > Windows Settings > Security Settings > Local Policies > User Rights Assignment
+Doppio click "Allow log on through Remote Desktop Services" e aggiungere il gruppo "Remote Desktop Users"
