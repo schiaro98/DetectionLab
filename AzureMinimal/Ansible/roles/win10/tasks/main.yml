@@ -94,19 +94,19 @@
         state: touch
   when: not menu_install.stat.exists
 
-- name: Install hashcat
-  win_shell: .\\install-hashcat.ps1
-  args:
-    chdir: 'c:\vagrant\scripts'
-  register: win10_hashcat
-  changed_when: "'Hashcat install finished...' in win10_hashcat.stdout"
-
 - name: Install bloodhound
   win_shell: .\\install-bloodhound.ps1
   args:
     chdir: 'c:\vagrant\scripts'
   register: win10_bloodhound
   changed_when: "'BloodHound installing finished...' in win10_bloodhound.stdout"
+
+- name: Install hashcat
+  win_shell: .\\install-hashcat.ps1
+  args:
+    chdir: 'c:\vagrant\scripts'
+  register: win10_hashcat
+  changed_when: "'Hashcat install finished...' in win10_hashcat.stdout"
 
 - name: Setup shortcut
   win_shell: .\\setup.ps1
