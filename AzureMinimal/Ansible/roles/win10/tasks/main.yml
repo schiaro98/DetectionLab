@@ -107,3 +107,10 @@
     chdir: 'c:\vagrant\scripts'
   register: win10_bloodhound
   changed_when: "'BloodHound installing finished...' in win10_bloodhound.stdout"
+
+- name: Setup shortcut
+  win_shell: .\\setup.ps1
+  args:
+    chdir: 'c:\vagrant\scripts'
+  register: win10_setup
+  changed_when: "'Setup finished...' in win10_setup.stdout"

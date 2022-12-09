@@ -161,5 +161,5 @@ if (Test-Path "$temp\neo4j.zip") {Remove-Item -Path "$temp\neo4j.zip"}
 if (Test-Path "$collectorResult") {Remove-Item -Path "$collectorResult\*.zip"}
 
 # All work is done !
-Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) BloodHound installing finished"
+Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) BloodHound installing finished..."
 
