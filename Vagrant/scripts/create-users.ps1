@@ -28,3 +28,5 @@ if ($checkForUser2 -eq $false) {
 } else { 
     Write-Host "$user2 already exist..."
 }
+
+Write-Host "Creation of local users completed..."

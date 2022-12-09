@@ -43,3 +43,5 @@ if((Get-ADUser -Filter *).SamAccountName -Contains $vuln1 -eq $false){
 Get-ADUser -Filter {Name -eq "vulnUser1"} | % {
     Set-ADAccountControl -Id $_ -DoesNotRequirePreAuth:$true
 }
+
+Write-Host "Creation of domain users completed..."

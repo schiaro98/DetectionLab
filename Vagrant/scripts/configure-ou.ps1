@@ -1,7 +1,7 @@
 # Purpose: Sets up the Server and Workstations OUs
 
 # Hardcoding DC hostname in hosts file to sidestep any DNS issues
-Add-Content "c:\windows\system32\drivers\etc\hosts" "        10.0.100.6   dc.windomain.local"
+Add-Content "c:\windows\system32\drivers\etc\hosts" "        10.0.100.4   dc.windomain.local"
 
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Creating Server and Workstation OUs..."
 # Create the Servers OU if it doesn't exist
