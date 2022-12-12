@@ -61,16 +61,4 @@
     state: present
     ignore_checksums: true
 
-- name: Create local users
-  win_shell: .\\create-users.ps1
-  args:
-    chdir: 'c:\vagrant\scripts'
-  register: local_user_creation
-  changed_when: "'Creation of local users completed...' in local_user_creation.stdout"
 
-- name: Join users to rdp group
-  win_shell: .\\enable-rdp.ps1
-  args:
-    chdir: 'c:\vagrant\scripts'
-  register: rdp_joined
-  changed_when: "'Users joined rdp group...' in rdp_joined.stdout"

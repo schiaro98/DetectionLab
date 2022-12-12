@@ -189,9 +189,23 @@
     - "wevtutil el | Select-String -notmatch \"Microsoft-Windows-LiveId\" | Foreach-Object {wevtutil cl \"$_\"}"
     - "Set-SmbServerConfiguration -AuditSmb1Access $true -Force"
 
+- name: Create local users
+  win_shell: .\\create-users.ps1
+  args:
+    chdir: 'c:\vagrant\scripts'
+  register: local_user_creation
+  changed_when: "'Creation of local users completed...' in local_user_creation.stdout"
+
 - name: Create domain users
   win_shell: .\\create-users-domain.ps1
   args:
     chdir: 'c:\vagrant\scripts'
   register: domain_user_creation
   changed_when: "'Creation of domain users completed...' in domain_user_creation.stdout"
+
+- name: Join users to rdp group
+  win_shell: .\\enable-rdp.ps1
+  args:
+    chdir: 'c:\vagrant\scripts'
+  register: rdp_joined
+  changed_when: "'Users joined rdp group...' in rdp_joined.stdout"
