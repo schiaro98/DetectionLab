@@ -115,7 +115,7 @@
   register: win10_setup
   changed_when: "'Setup finished...' in win10_setup.stdout"
 
-  - name: Create local users
+- name: Create local users
   win_shell: .\\create-users.ps1
   args:
     chdir: 'c:\vagrant\scripts'
