@@ -1,7 +1,7 @@
 $usersDomain = @("domainUser1", "domainUser2", "domainUser3", "domainUser4", "vagrant")
 
 foreach ($user in $usersDomain) {
-    Add-ADGroupMember -Identity "Remote Dekstop Users" -Members $user
+    Add-ADGroupMember -Identity "Remote Desktop Users" -Members $user
 }
 
 net localgroup "Remote Desktop Users" "local1" /add
